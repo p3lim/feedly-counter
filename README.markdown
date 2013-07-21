@@ -12,5 +12,5 @@ I made this as an alternative to the original
 
 You can install this extension directly from the
 Google Chrome webstore by clicking this banner:
-[<img src='http://bit.ly/chromebadge'>](http://bit.ly/feedly-counter)
+[<img src='https://developers.google.com/chrome/web-store/images/branding/ChromeWebStore_BadgeWBorder_v2_206x58.png'>](http://bit.ly/feedly-counter)
 
