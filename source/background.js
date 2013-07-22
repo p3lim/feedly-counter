@@ -1,8 +1,38 @@
+var rotation, context, image;
+
+var animateIcon = function(){
+	rotation++;
+
+	context.save();
+	context.clearRect(0, 0, 32, 32);
+	context.translate(16, 16);
+	context.rotate(rotation * Math.PI / 32);
+	context.translate(-16, -16);
+	context.drawImage(image, 0, 0);
+	context.restore();
+
+	chrome.browserAction.setIcon({
+		imageData: context.getImageData(0, 0, 19, 19)
+	});
+
+	if(rotation <= 63){
+		setTimeout(animateIcon, 10);
+	} else {
+		rotation = 0;
+	}
+}
+
 var updateBadge = function(text){
 	if(text !== undefined){
 		chrome.browserAction.setIcon({path: '/icons/icon_enabled.png'});
 		chrome.browserAction.setBadgeBackgroundColor({color: '#D00018'});
 		chrome.browserAction.setBadgeText({text: text.toString()});
+
+		if(+localStorage.getItem('unread') !== +text){
+			animateIcon();
+		}
+
+		localStorage.setItem('unread', text);
 	} else {
 		chrome.browserAction.setIcon({path: '/icons/icon_disabled.png'});
 		chrome.browserAction.setBadgeText({text: ''});
@@ -77,6 +107,18 @@ var onInitialize = function(){
 	if(!localStorage.getItem('interval')){
 		localStorage.setItem('interval', '15');
 	}
+
+	rotation = 0;
+
+	var canvas = document.createElement('canvas');
+	canvas.height = 19;
+	canvas.width = 19;
+
+	context = canvas.getContext('2d');
+	context.scale(0.6, 0.6)
+
+	image = new Image();
+	image.src = '/icons/icon_enabled.png';
 
 	requestCount();
 
