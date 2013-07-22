@@ -61,11 +61,11 @@ var onReadyState = function(){
 	}
 }
 
-var requestCount = function(){
+var requestCount = function(bypass){
 	if(localStorage.getItem('oauth')){
 		var currentTime = Date.now();
 		var lastRequest = +localStorage.getItem('lastRequest');
-		if(!lastRequest || (currentTime - lastRequest) > 5000){
+		if((!lastRequest || (currentTime - lastRequest) > 5000) || bypass){
 			localStorage.setItem('lastRequest', currentTime);
 
 			var xhr = new XMLHttpRequest();
@@ -98,7 +98,7 @@ var markCallback = function(details){
 		var data = JSON.parse(String.fromCharCode.apply(null, bytes));
 
 		if(data.action === 'markAsRead'){
-			setTimeout(requestCount, 2000);
+			requestCount(true);
 		}
 	}
 }
