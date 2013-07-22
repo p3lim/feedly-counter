@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Feedly Counter",
 	"description": "Shows unread article count from Feedly",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"options_page": "options.html",
 	"icons": {
 		"128": "/icons/icon128.png",
