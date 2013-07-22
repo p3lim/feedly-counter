@@ -98,7 +98,9 @@ var markCallback = function(details){
 		var data = JSON.parse(String.fromCharCode.apply(null, bytes));
 
 		if(data.action === 'markAsRead'){
-			requestCount(true);
+			setTimeout(function(){
+				requestCount(true);
+			}, 2000);
 		}
 	}
 }
