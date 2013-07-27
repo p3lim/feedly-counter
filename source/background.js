@@ -61,19 +61,13 @@ var onReadyState = function(){
 	}
 }
 
-var requestCount = function(bypass){
+var requestCount = function(){
 	if(localStorage.getItem('oauth')){
-		var currentTime = Date.now();
-		var lastRequest = +localStorage.getItem('lastRequest');
-		if((!lastRequest || (currentTime - lastRequest) > 5000) || bypass){
-			localStorage.setItem('lastRequest', currentTime);
-
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', 'http://cloud.feedly.com/v3/markers/counts');
-			xhr.onreadystatechange = onReadyState;
-			xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
-			xhr.send();
-		}
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'http://cloud.feedly.com/v3/markers/counts');
+		xhr.onreadystatechange = onReadyState;
+		xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
+		xhr.send();
 	} else {
 		updateBadge();
 	}
@@ -98,9 +92,7 @@ var markCallback = function(details){
 		var data = JSON.parse(String.fromCharCode.apply(null, bytes));
 
 		if(data.action === 'markAsRead'){
-			setTimeout(function(){
-				requestCount(true);
-			}, 2000);
+			setTimeout(requestCount, 2000);
 		}
 	}
 }
