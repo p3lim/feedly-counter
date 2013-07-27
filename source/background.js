@@ -54,7 +54,7 @@ var onReadyState = function(){
 		if(this.status === 200){
 			var response = JSON.parse(this.response);
 			parseCount(response.unreadcounts);
-		} else if(status === 401){
+		} else {
 			localStorage.removeItem('oauth');
 			updateBadge();
 		}
