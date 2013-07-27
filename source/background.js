@@ -35,7 +35,8 @@ var updateBadge = function(text){
 		localStorage.setItem('unread', text);
 	} else {
 		chrome.browserAction.setIcon({path: '/icons/icon_disabled.png'});
-		chrome.browserAction.setBadgeText({text: ''});
+		chrome.browserAction.setBadgeBackgroundColor({color: '#BBB'});
+		chrome.browserAction.setBadgeText({text: '?'});
 	}
 }
 
