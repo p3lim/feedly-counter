@@ -28,11 +28,11 @@ var updateBadge = function(text){
 		chrome.browserAction.setBadgeBackgroundColor({color: '#D00018'});
 		chrome.browserAction.setBadgeText({text: text.toString()});
 
-		if(+localStorage.getItem('unread') !== +text){
+		if(+localStorage.getItem('feedly-counter-unread') !== +text){
 			animateIcon();
 		}
 
-		localStorage.setItem('unread', text);
+		localStorage.setItem('feedly-counter-unread', text);
 	} else {
 		chrome.browserAction.setIcon({path: '/icons/icon_disabled.png'});
 		chrome.browserAction.setBadgeBackgroundColor({color: '#BBB'});
@@ -56,18 +56,18 @@ var onReadyState = function(){
 			var response = JSON.parse(this.response);
 			parseCount(response.unreadcounts);
 		} else {
-			localStorage.removeItem('oauth');
+			localStorage.removeItem('feedly-counter-oauth');
 			updateBadge();
 		}
 	}
 }
 
 var requestCount = function(){
-	if(localStorage.getItem('oauth')){
+	if(localStorage.getItem('feedly-counter-oauth')){
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', localStorage.getItem('feedly-counter-scheme') + '://cloud.feedly.com/v3/markers/counts');
 		xhr.onreadystatechange = onReadyState;
-		xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
+		xhr.setRequestHeader('Authorization', localStorage.getItem('feedly-counter-oauth'));
 		xhr.send();
 	} else {
 		updateBadge();
@@ -79,7 +79,7 @@ var authCallback = function(details){
 	for(var index = 0; index < headers.length; index++){
 		var header = headers[index];
 		if(header.name === 'X-Feedly-Access-Token'){
-			localStorage.setItem('oauth', header.value);
+			localStorage.setItem('feedly-counter-oauth', header.value);
 			requestCount();
 		}
 	}
@@ -143,7 +143,7 @@ chrome.runtime.onStartup.addListener(onInitialize);
 chrome.runtime.onInstalled.addListener(onInitialize);
 
 chrome.browserAction.onClicked.addListener(function(){
-	if(localStorage.getItem('oauth')){
+	if(localStorage.getItem('feedly-counter-oauth')){
 		requestCount();
 	} else {
 		chrome.webRequest.onBeforeSendHeaders.addListener(authCallback, {
