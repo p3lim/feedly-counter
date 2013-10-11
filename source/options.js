@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 var timeout;
 document.querySelector('input').addEventListener('input', function(x){
-	if(this.value < 5) this.value = 5;
+	if(this.value < 1) this.value = 1;
 	if(this.value > 1440) this.value = 1440;
 
 	localStorage.setItem('interval', this.value);
