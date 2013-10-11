@@ -19,14 +19,18 @@
 				color: #F00;
 			}
 
-			input {
+			input[type=number] {
 				width: 80px;
 			}
 		</style>
 	</head>
 	<body>
 		<h2>Polling interval</h2>
-		Minutes: <input type='number'>
+		Minutes: <input id='interval' type='number'>
+		<span></span>
+		<br><br>
+		<h2>Use HTTPS when available</h2>
+		Toggle: <input id='scheme' type='checkbox'>
 		<span></span>
 
 		<script type='text/javascript' src='options.js'></script>
