@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	var scheme = document.getElementById('scheme');
 	scheme.checked = (localStorage.getItem('feedly-counter-scheme') === 'https');
+
+	if(!localStorage.getItem('feedly-counter-change1')){
+		var changelog = document.getElementById('changelog');
+		changelog.style.display = 'inline';
+
+		localStorage.setItem('feedly-counter-change1', 'shown');
+	}
 });
 
 var interval;

@@ -117,6 +117,10 @@ var onInitialize = function(){
 		localStorage.setItem('feedly-counter-scheme', 'https');
 	}
 
+	if(!localStorage.getItem('feedly-counter-change1')){
+		chrome.tabs.create({url: 'options.html'});
+	}
+
 	rotation = 0;
 
 	var canvas = document.createElement('canvas');

@@ -22,6 +22,10 @@
 			input[type=number] {
 				width: 80px;
 			}
+
+			#changelog {
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -32,6 +36,16 @@
 		<h2>Use HTTPS when available</h2>
 		Toggle: <input id='scheme' type='checkbox'>
 		<span></span>
+		<br><br>
+
+		<div id='changelog'>
+			<h1>Check out these awesome new features!</h1>
+			<ul>
+				<li>Increased the lower limit of the interval</li>
+				<li>Added support for HTTPS (can be changed here)</li>
+				<li>All settings have been reset (sorry)</li>
+			</ul>
+		</div>
 
 		<script type='text/javascript' src='options.js'></script>
 	</body>
