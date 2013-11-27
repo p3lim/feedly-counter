@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	var scheme = document.getElementById('scheme');
 	scheme.checked = (localStorage.getItem('feedly-counter-scheme') === 'https');
 
+	var notifications = document.getElementById('notifications');
+	notifications.checked = localStorage.getItem('feedly-counter-notifications') === 'true';
+
 	if(!localStorage.getItem('feedly-counter-change1')){
 		var changelog = document.getElementById('changelog');
 		changelog.style.display = 'inline';
@@ -42,6 +45,19 @@ document.querySelector('#scheme').addEventListener('change', function(){
 
 	clearTimeout(scheme);
 	scheme = setTimeout(function(){
+		status.innerHTML = '';
+	}, 750);
+});
+
+var notifications;
+document.querySelector('#notifications').addEventListener('change', function(){
+	localStorage.setItem('feedly-counter-notifications', this.checked);
+
+	var status = document.getElementsByTagName('span')[2];
+	status.innerHTML = 'Saved!';
+
+	clearTimeout(notifications);
+	notifications = setTimeout(function(){
 		status.innerHTML = '';
 	}, 750);
 });

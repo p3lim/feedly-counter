@@ -30,6 +30,15 @@ var updateBadge = function(text){
 
 		if(+localStorage.getItem('feedly-counter-unread') !== +text){
 			animateIcon();
+
+			if(localStorage.getItem('feedly-counter-notifications') === 'true'){
+				chrome.notifications.create('feedly-counter-notification', {
+					type: 'basic',
+					iconUrl: '/icons/icon128.png',
+					title: 'Feedly Counter',
+					message: text + ' unread feed' + (text > 1 ? 's' : ''),
+				}, function(){});
+			}
 		}
 
 		localStorage.setItem('feedly-counter-unread', text);
@@ -115,6 +124,10 @@ var onInitialize = function(){
 
 	if(!localStorage.getItem('feedly-counter-scheme')){
 		localStorage.setItem('feedly-counter-scheme', 'https');
+	}
+
+	if(!localStorage.getItem('feedly-counter-notifications')){
+		localStorage.setItem('feedly-counter-notifications', false);
 	}
 
 	if(!localStorage.getItem('feedly-counter-change1')){
