@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	var notifications = document.getElementById('notifications');
 	notifications.checked = localStorage.getItem('feedly-counter-notifications') === 'true';
 
-	if(!localStorage.getItem('feedly-counter-change1')){
+	if(!localStorage.getItem('feedly-counter-change2')){
 		var changelog = document.getElementById('changelog');
 		changelog.style.display = 'inline';
 
-		localStorage.setItem('feedly-counter-change1', 'shown');
+		localStorage.setItem('feedly-counter-change2', 'shown');
 	}
 });
 
