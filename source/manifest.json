@@ -9,7 +9,7 @@
 		"48": "/icons/icon48.png"
 	},
 	"permissions": [
-		"tabs", "webRequest", "alarms", "*://cloud.feedly.com/*"
+		"tabs", "webRequest", "alarms", "*://*.feedly.com/*"
 	],
 	"browser_action": {
 		"default_icon": "/icons/icon_disabled.png"
