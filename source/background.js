@@ -169,14 +169,14 @@ chrome.browserAction.onClicked.addListener(function(){
 	}
 
 	chrome.tabs.query({
-		url: scheme + '://feedly.com/'
+		url: scheme + '://feedly.com/' + (localStorage.getItem('feedly-counter-beta') === 'true' ? 'beta' : '')
 	}, function(tabs){
 		var tab = tabs[0];
 		if(tab){
 			chrome.tabs.update(tab.id, {active: true});
 			chrome.tabs.reload(tab.id);
 		} else {
-			chrome.tabs.create({url: scheme + '://feedly.com/'});
+			chrome.tabs.create({url: scheme + '://feedly.com/' + (localStorage.getItem('feedly-counter-beta') === 'true' ? 'beta' : '')});
 		}
 	});
 });
