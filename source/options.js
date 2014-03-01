@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	var notifications = document.getElementById('notifications');
 	notifications.checked = localStorage.getItem('feedly-counter-notifications') === 'true';
 
-	if(!localStorage.getItem('feedly-counter-change2')){
+	if(!localStorage.getItem('feedly-counter-change3')){
 		var changelog = document.getElementById('changelog');
 		changelog.style.display = 'inline';
 
-		localStorage.setItem('feedly-counter-change2', 'shown');
+		localStorage.setItem('feedly-counter-change3', 'shown');
 	}
 });
 
