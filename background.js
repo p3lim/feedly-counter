@@ -129,7 +129,7 @@ var onInitialize = function(){
 		localStorage.setItem('feedly-counter-notifications', false);
 	}
 
-	if(!localStorage.getItem('feedly-counter-change2')){
+	if(!localStorage.getItem('feedly-counter-change3')){
 		chrome.tabs.create({url: 'options.html'});
 	}
 
