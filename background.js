@@ -130,6 +130,7 @@ var onInitialize = function(){
 	}
 
 	if(!localStorage.getItem('feedly-counter-change3')){
+		localStorage.removeItem('feedly-counter-oauth');
 		chrome.tabs.create({url: 'options.html'});
 	}
 
