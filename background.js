@@ -65,6 +65,7 @@ var onReadyState = function(){
 			var response = JSON.parse(this.response);
 			parseCount(response.unreadcounts);
 		} else {
+			localStorage.removeItem('feedly-counter-oauth');
 			updateBadge();
 		}
 	}
