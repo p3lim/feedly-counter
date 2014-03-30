@@ -24,13 +24,21 @@ var animateIcon = function(){
 
 var updateNotifications = function(count){
 	if(localStorage.getItem('feedly-counter-notifications') === 'true'){
-		chrome.notifications.clear('feedly-counter-notification', function(){
-			chrome.notifications.create('feedly-counter-notification', {
-				type: 'basic',
-				iconUrl: '/icons/icon128.png',
-				title: 'Feedly Counter',
-				message: count + ' unread feed' + (count > 1 ? 's' : '')
-			}, function(){});
+		chrome.tabs.query({
+			currentWindow: true,
+			active: true,
+			url: 'http*://feedly.com/*'
+		}, function(tabs){
+			if(tabs.length == 0){
+				chrome.notifications.clear('feedly-counter-notification', function(){
+					chrome.notifications.create('feedly-counter-notification', {
+						type: 'basic',
+						iconUrl: '/icons/icon128.png',
+						title: 'Feedly Counter',
+						message: count + ' unread feed' + (count > 1 ? 's' : '')
+					}, function(){});
+				});
+			};
 		});
 	};
 };
