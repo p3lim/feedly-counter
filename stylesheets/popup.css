@@ -5,3 +5,82 @@ html {
 body {
 	height: 478px;
 }
+
+.spinners {
+	position: relative;
+	left: 34%;
+	top: 25%;
+	width: 128px;
+	height: 128px;
+	-webkit-transform: scale(0.6);
+}
+
+.spinners div {
+	position: absolute;
+	background-color: #fff;
+	height: 23px;
+	width: 23px;
+	-webkit-border-radius: 12px;
+	-webkit-animation-name: spinner_fade;
+	-webkit-animation-duration: 0.8s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: linear;
+}
+
+.spinner-1 {
+	left: 0;
+	top: 52px;
+	-webkit-animation-delay: 0.3s;
+}
+
+.spinner-2 {
+	left: 15px;
+	top: 15px;
+	-webkit-animation-delay: 0.4s;
+}
+
+.spinner-3 {
+	left: 52px;
+	top: 0;
+	-webkit-animation-delay: 0.5s;
+}
+
+.spinner-4 {
+	right: 15px;
+	top: 15px;
+	-webkit-animation-delay: 0.6s;
+}
+
+.spinner-5 {
+	right: 0;
+	top: 52px;
+	-webkit-animation-delay: 0.7s;
+}
+
+.spinner-6 {
+	right: 15px;
+	bottom: 15px;
+	-webkit-animation-delay: 0.8s;
+}
+
+.spinner-7 {
+	left: 52px;
+	bottom: 0;
+	-webkit-animation-delay: 0.9s;
+}
+
+.spinner-8 {
+	left: 15px;
+	bottom: 15px;
+	-webkit-animation-delay: 1s;
+}
+
+@-webkit-keyframes spinner_fade {
+	0% {
+		background-color: #4c9dd6
+	}
+
+	100% {
+		background-color: #fff
+	}
+}
