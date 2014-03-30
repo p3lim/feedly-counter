@@ -1,4 +1,10 @@
 var context, lastCount;
+var defaults = {
+	'interval': 15,
+	'beta': false,
+	'notifications': false,
+	'upgrade': 1,
+}
 
 var rotation = 0;
 var animateIcon = function(){
@@ -125,11 +131,14 @@ var markCallback = function(details){
 };
 
 var onInitialize = function(){
-	if(!localStorage.getItem('interval'))
-		localStorage.setItem('interval', '15');
+	if(!localStorage.getItem('upgrade')){
+		localStorage.clear();
 
-	if(!localStorage.getItem('notifications'))
-		localStorage.setItem('notifications', false);
+		for(var key in defaults){
+			if(key !== null)
+				localStorage.addItem(key, defaults[key]);
+		}
+	}
 
 	rotation = 0;
 
