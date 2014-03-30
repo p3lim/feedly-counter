@@ -138,6 +138,19 @@ var onInitialize = function(){
 			if(key !== null)
 				localStorage.addItem(key, defaults[key]);
 		}
+	} else if(localStorage.getItem('upgrade') < defaults.upgrade){
+		for(var index = 0; index < localStorage.length; index++){
+			var key = localStorage.key(index);
+			if(defaults[key] === undefined)
+				localStorage.removeItem(key);
+		}
+
+		for(var key in defaults){
+			if(localStorage.getItem(key) === null)
+				localStorage.addItem(key, defaults[key]);
+		}
+
+		localStorage.setItem('upgrade', defaults.upgrade);
 	}
 
 	rotation = 0;
