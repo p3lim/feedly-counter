@@ -9,11 +9,8 @@
 		"48": "images/icon48.png"
 	},
 	"permissions": [
-		"tabs", "webRequest", "alarms", "notifications", "*://*.feedly.com/*"
+		"tabs", "webRequest", "alarms", "notifications", "https://feedly.com/*"
 	],
-	"browser_action": {
-		"default_icon": "images/icon_disabled.png"
-	},
 	"background": {
 		"persistent": true,
 		"scripts": [
