@@ -68,7 +68,7 @@ var updateBadge = function(count){
 		chrome.browserAction.setIcon({path: 'images/icon_enabled.png'});
 
 		if(count > 0){
-			chrome.browserAction.setBadgeBackgroundColor({color: '#D00018'});
+			chrome.browserAction.setBadgeBackgroundColor({color: '#d00018'});
 			chrome.browserAction.setBadgeText({text: count.toString()});
 		} else
 			chrome.browserAction.setBadgeText({text: ''});
@@ -83,7 +83,7 @@ var updateBadge = function(count){
 		};
 	} else {
 		chrome.browserAction.setIcon({path: 'images/icon_disabled.png'});
-		chrome.browserAction.setBadgeBackgroundColor({color: '#BBB'});
+		chrome.browserAction.setBadgeBackgroundColor({color: '#bbb'});
 		chrome.browserAction.setBadgeText({text: '?'});
 	};
 };
