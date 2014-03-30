@@ -1,34 +1,22 @@
 <html>
 	<head>
-		<link rel='icon' href='images/icon48.png'>
-		<link rel='stylesheet' href='stylesheets/options.css'>
 		<title>Options for Feedly Counter</title>
+		<link rel='stylesheet' href='stylesheets/options.css'>
+		<script src='scripts/options.js'></script>
 	</head>
 	<body>
-		<h2>Polling interval</h2>
-		Minutes: <input id='interval' type='number'>
-		<span></span>
-		<br><br>
-		<h2>Use HTTPS when available</h2>
-		Toggle: <input id='scheme' type='checkbox'>
-		<span></span>
-		<br><br>
-		<h2>Use Feedly beta channel</h2>
-		Toggle: <input id='beta' type='checkbox'>
-		<span></span>
-		<br><br>
-		<h2>Desktop Notifications</h2>
-		Toggle: <input id='notifications' type='checkbox'>
-		<span></span>
-		<br><br>
-
-		<div id='changelog'>
-			<h1>Check out these awesome new features!</h1>
-			<ul>
-				<li>Added feedly beta channel option (<a href='http://blog.feedly.com/2013/12/08/announcing-the-feedly-beta-channel/' target='_blank'>source</a>)</li>
-			</ul>
+		<div class='number'>
+			<h2>Check for news every <span title='Scroll to change, hold shift to go fast!'></span> minute(s)</h2>
 		</div>
-
-		<script src='scripts/options.js'></script>
+		<div class='checkbox'>
+			<input id='beta' type='checkbox'>
+			<label for='beta'></label>
+			<h2>Use the <a href='http://blog.feedly.com/2013/12/08/announcing-the-feedly-beta-channel/' target='_blank'>beta channel</a></h2>
+		</div>
+		<div class='checkbox'>
+			<input id='notifications' type='checkbox'>
+			<label for='notifications'></label>
+			<h2>Show desktop notifications</h2>
+		</div>
 	</body>
 </html>

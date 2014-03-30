@@ -100,7 +100,7 @@ var requestCountResponse = function(){
 					updateBadge(item.count);
 			};
 		} else {
-			localStorage.removeItem('oauth');
+			updateSettings('oauth');
 			updateBadge();
 		};
 	};
@@ -122,12 +122,28 @@ var authCallback = function(details){
 	for(var index = 0; index < headers.length; index++){
 		var header = headers[index];
 		if(header.name === 'X-Feedly-Access-Token'){
-			localStorage.setItem('oauth', header.value);
+			updateSettings('oauth', header.value);
 			requestCount();
 		};
 	};
 
 	chrome.webRequest.onBeforeSendHeaders.removeListener(authCallback);
+};
+
+var updateSettings = function(key, value, init){
+	if(value)
+		localStorage.setItem(key, value);
+	else
+		localStorage.removeItem(key);
+
+	if(!init){
+		if(key == 'interval'){
+			chrome.alarms.clear('feedly-counter');
+			chrome.alarms.create('feedly-counter', {
+				periodInMinutes: +value
+			});
+		};
+	};
 };
 
 var initialize = function(){
@@ -136,7 +152,7 @@ var initialize = function(){
 
 		for(var key in defaults){
 			if(key !== null)
-				localStorage.addItem(key, defaults[key]);
+				updateSettings(key, defaults[key], true);
 		};
 	} else if(localStorage.getItem('upgrade') < defaults.upgrade){
 		for(var index = 0; index < localStorage.length; index++){
@@ -147,7 +163,7 @@ var initialize = function(){
 
 		for(var key in defaults){
 			if(localStorage.getItem(key) === null)
-				localStorage.addItem(key, defaults[key]);
+				updateSettings(key, defaults[key], true);
 		};
 
 		localStorage.setItem('upgrade', defaults.upgrade);
@@ -213,3 +229,8 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
 	urls: 'https://feedly.com/v3/markers?*'],
 	types: ['xmlhttprequest']
 }, ['requestBody']);
+
+chrome.runtime.onMessage.addListener(function(message){
+	if(message.key)
+		updateSettings(message.key, message.value);
+});
