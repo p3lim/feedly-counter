@@ -2,8 +2,8 @@ var defaults = {
 	'interval': 15,
 	'beta': false,
 	'notifications': false,
-	'upgrade': 1,
-}
+	'upgrade': 1
+};
 
 var context;
 var createIcon = function(callback){
@@ -106,9 +106,9 @@ var onReadyState = function(){
 		} else {
 			localStorage.removeItem('oauth');
 			updateBadge();
-		}
-	}
-}
+		};
+	};
+};
 
 var requestCount = function(){
 	if(localStorage.getItem('oauth')){
@@ -151,21 +151,21 @@ var onInitialize = function(){
 		for(var key in defaults){
 			if(key !== null)
 				localStorage.addItem(key, defaults[key]);
-		}
+		};
 	} else if(localStorage.getItem('upgrade') < defaults.upgrade){
 		for(var index = 0; index < localStorage.length; index++){
 			var key = localStorage.key(index);
 			if(defaults[key] === undefined)
 				localStorage.removeItem(key);
-		}
+		};
 
 		for(var key in defaults){
 			if(localStorage.getItem(key) === null)
 				localStorage.addItem(key, defaults[key]);
-		}
+		};
 
 		localStorage.setItem('upgrade', defaults.upgrade);
-	}
+	};
 
 	createIcon(requestCount);
 
