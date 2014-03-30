@@ -143,7 +143,7 @@ var markCallback = function(details){
 	};
 };
 
-var onInitialize = function(){
+var initialize = function(){
 	if(!localStorage.getItem('upgrade')){
 		localStorage.clear();
 
@@ -175,8 +175,8 @@ var onInitialize = function(){
 	}, ['requestBody']);
 };
 
-chrome.runtime.onStartup.addListener(onInitialize);
-chrome.runtime.onInstalled.addListener(onInitialize);
+chrome.runtime.onStartup.addListener(initialize);
+chrome.runtime.onInstalled.addListener(initialize);
 
 chrome.browserAction.onClicked.addListener(function(){
 	if(localStorage.getItem('oauth'))
