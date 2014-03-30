@@ -16,8 +16,13 @@ var popupResponse = function(){
 };
 
 document.addEventListener('DOMContentLoaded', function(){
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'https://feedly.com/v3/auth/auth?' + Object.keys(params).map(map).join('&'));
-	xhr.onreadystatechange = popupResponse;
-	xhr.send();
+	if(localStorage.getItem('token')){
+		window.close();
+		chrome.runtime.sendMessage({visit: true});
+	} else {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'https://feedly.com/v3/auth/auth?' + Object.keys(params).map(map).join('&'));
+		xhr.onreadystatechange = popupResponse;
+		xhr.send();
+	};
 });

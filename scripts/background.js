@@ -122,7 +122,9 @@ var updateSettings = function(key, value, init){
 		localStorage.removeItem(key);
 
 	if(!init){
-		if(key == 'interval'){
+		if(key == 'token')
+			updateBadge();
+		else if(key == 'interval'){
 			chrome.alarms.clear('feedly-counter');
 			chrome.alarms.create('feedly-counter', {
 				periodInMinutes: +value
@@ -217,6 +219,8 @@ var tokenResponse = function(){
 chrome.runtime.onMessage.addListener(function(message){
 	if(message.key)
 		updateSettings(message.key, message.value);
+	else if(message.visit)
+		openTab();
 	else if(message.code){
 		chrome.tabs.remove(sender.tab.id);
 
