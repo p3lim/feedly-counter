@@ -130,17 +130,19 @@ var authCallback = function(details){
 	chrome.webRequest.onBeforeSendHeaders.removeListener(authCallback);
 };
 
-var updateSettings = function(key, value){
+var updateSettings = function(key, value, init){
 	if(value)
 		localStorage.setItem(key, value);
 	else
 		localStorage.removeItem(key);
 
-	if(key == 'interval'){
-		chrome.alarms.clear('feedly-counter');
-		chrome.alarms.create('feedly-counter', {
-			periodInMinutes: +value
-		});
+	if(!init){
+		if(key == 'interval'){
+			chrome.alarms.clear('feedly-counter');
+			chrome.alarms.create('feedly-counter', {
+				periodInMinutes: +value
+			});
+		};
 	};
 };
 
@@ -150,18 +152,18 @@ var initialize = function(){
 
 		for(var key in defaults){
 			if(key !== null)
-				updateSettings(key, defaults[key]);
+				updateSettings(key, defaults[key], true);
 		};
 	} else if(localStorage.getItem('upgrade') < defaults.upgrade){
 		for(var index = 0; index < localStorage.length; index++){
 			var key = localStorage.key(index);
 			if(defaults[key] === undefined)
-				updateSettings(key);
+				localStorage.removeItem(key);
 		};
 
 		for(var key in defaults){
 			if(localStorage.getItem(key) === null)
-				updateSettings(key, defaults[key]);
+				updateSettings(key, defaults[key], true);
 		};
 
 		localStorage.setItem('upgrade', defaults.upgrade);
