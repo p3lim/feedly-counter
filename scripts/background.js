@@ -88,20 +88,17 @@ var updateBadge = function(count){
 	};
 };
 
-var parseCount = function(details){
-	for(var index = 0; index < details.length; index++){
-		var item = details[index];
-
-		if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
-			updateBadge(item.count);
-	};
-};
-
-var onReadyState = function(){
+var requestCountResponse = function(){
 	if(this.readyState === 4){
 		if(this.status === 200){
 			var response = JSON.parse(this.response);
-			parseCount(response.unreadcounts);
+
+			for(var index = 0; index < details.length; index++){
+				var item = details[index];
+
+				if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
+					updateBadge(item.count);
+			};
 		} else {
 			localStorage.removeItem('oauth');
 			updateBadge();
@@ -113,8 +110,8 @@ var requestCount = function(){
 	if(localStorage.getItem('oauth')){
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', 'https://feedly.com/v3/markers/counts');
-		xhr.onreadystatechange = onReadyState;
 		xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
+		xhr.onreadystatechange = requestCountResponse;
 		xhr.send();
 	} else
 		updateBadge();
