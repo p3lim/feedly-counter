@@ -1,10 +1,22 @@
-var context, lastCount;
 var defaults = {
 	'interval': 15,
 	'beta': false,
 	'notifications': false,
 	'upgrade': 1,
 }
+
+var context;
+var createIcon = function(){
+	var canvas = document.createElement('canvas');
+	canvas.height = 19;
+	canvas.width = 19;
+
+	context = canvas.getContext('2d');
+	context.scale(0.6, 0.6)
+
+	context.image = new Image();
+	context.image.src = 'images/icon_enabled.png';
+};
 
 var rotation = 0;
 var animateIcon = function(){
@@ -50,6 +62,7 @@ var updateNotifications = function(count){
 	};
 };
 
+var lastCount;
 var updateBadge = function(count){
 	if(typeof(count) == 'number'){
 		chrome.browserAction.setIcon({path: 'images/icon_enabled.png'});
@@ -153,18 +166,7 @@ var onInitialize = function(){
 		localStorage.setItem('upgrade', defaults.upgrade);
 	}
 
-	rotation = 0;
-
-	var canvas = document.createElement('canvas');
-	canvas.height = 19;
-	canvas.width = 19;
-
-	context = canvas.getContext('2d');
-	context.scale(0.6, 0.6)
-
-	context.image = new Image();
-	context.image.src = 'images/icon_enabled.png';
-
+	createIcon();
 	requestCount();
 
 	chrome.alarms.create('feedly-counter', {periodInMinutes: +localStorage.getItem('interval')});
