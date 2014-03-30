@@ -62,3 +62,11 @@ label:hover:after {
 div {
 	height: 55px;
 }
+
+a, a:visited {
+	color: #555;
+}
+
+a:hover {
+	color: #2b7df9;
+}
