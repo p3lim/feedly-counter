@@ -2,9 +2,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	var interval = document.getElementById('interval');
 	interval.value = localStorage.getItem('interval');
 
-	var scheme = document.getElementById('scheme');
-	scheme.checked = (localStorage.getItem('scheme') === 'https');
-
 	var beta = document.getElementById('beta');
 	beta.checked = localStorage.getItem('beta') === 'true';
 
@@ -31,23 +28,6 @@ document.querySelector('#interval').addEventListener('input', function(x){
 
 	clearTimeout(interval);
 	interval = setTimeout(function(){
-		status.innerHTML = '';
-	}, 750);
-});
-
-var scheme;
-document.querySelector('#scheme').addEventListener('change', function(){
-	if(this.checked){
-		localStorage.setItem('scheme', 'https');
-	} else {
-		localStorage.setItem('scheme', 'http');
-	}
-
-	var status = document.getElementsByTagName('span')[1];
-	status.innerHTML = 'Saved!';
-
-	clearTimeout(scheme);
-	scheme = setTimeout(function(){
 		status.innerHTML = '';
 	}, 750);
 });

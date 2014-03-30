@@ -27,7 +27,7 @@ var updateNotifications = function(count){
 		chrome.tabs.query({
 			currentWindow: true,
 			active: true,
-			url: 'http*://feedly.com/*'
+			url: 'https://feedly.com/*'
 		}, function(tabs){
 			if(tabs.length == 0){
 				chrome.notifications.clear('feedly-counter', function(){
@@ -92,7 +92,7 @@ var onReadyState = function(){
 var requestCount = function(){
 	if(localStorage.getItem('oauth')){
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', localStorage.getItem('scheme') + '://feedly.com/v3/markers/counts');
+		xhr.open('GET', 'https://feedly.com/v3/markers/counts');
 		xhr.onreadystatechange = onReadyState;
 		xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
 		xhr.send();
@@ -123,22 +123,9 @@ var markCallback = function(details){
 	};
 };
 
-var onStorageChanged = function(event){
-	if(event.key === 'scheme'){
-		chrome.webRequest.onBeforeRequest.removeListener(markCallback);
-		chrome.webRequest.onBeforeRequest.addListener(markCallback, {
-				urls: [event.newValue + '://feedly.com/v3/markers?*'],
-				types: ['xmlhttprequest']
-		}, ['requestBody']);
-	};
-};
-
 var onInitialize = function(){
 	if(!localStorage.getItem('interval'))
 		localStorage.setItem('interval', '15');
-
-	if(!localStorage.getItem('scheme'))
-		localStorage.setItem('scheme', 'https');
 
 	if(!localStorage.getItem('notifications'))
 		localStorage.setItem('notifications', false);
@@ -162,10 +149,9 @@ var onInitialize = function(){
 
 	requestCount();
 
-	window.addEventListener('storage', onStorageChanged, false);
 	chrome.alarms.create('feedly-counter', {periodInMinutes: +localStorage.getItem('interval')});
 	chrome.webRequest.onBeforeRequest.addListener(markCallback, {
-		urls: [localStorage.getItem('scheme') + '://feedly.com/v3/markers?*'],
+		urls: 'https://feedly.com/v3/markers?*'],
 		types: ['xmlhttprequest']
 	}, ['requestBody']);
 };
@@ -174,24 +160,23 @@ chrome.runtime.onStartup.addListener(onInitialize);
 chrome.runtime.onInstalled.addListener(onInitialize);
 
 chrome.browserAction.onClicked.addListener(function(){
-	var scheme = localStorage.getItem('scheme');
 	if(localStorage.getItem('oauth'))
 		requestCount();
 	else {
 		chrome.webRequest.onBeforeSendHeaders.addListener(authCallback, {
-			urls: [scheme + '://feedly.com/v3/subscriptions*']
+			urls: ['https://feedly.com/v3/subscriptions*']
 		}, ['requestHeaders']);
 	};
 
 	chrome.tabs.query({
-		url: scheme + '://feedly.com/' + (localStorage.getItem('beta') === 'true' ? 'beta' : '')
+		url: 'https://feedly.com/' + (localStorage.getItem('beta') === 'true' ? 'beta' : '')
 	}, function(tabs){
 		var tab = tabs[0];
 		if(tab){
 			chrome.tabs.update(tab.id, {active: true});
 			chrome.tabs.reload(tab.id);
 		} else
-			chrome.tabs.create({url: scheme + '://feedly.com/' + (localStorage.getItem('beta') === 'true' ? 'beta' : '')});
+			chrome.tabs.create({url: 'https://feedly.com/' + (localStorage.getItem('beta') === 'true' ? 'beta' : '')});
 	});
 });
 
