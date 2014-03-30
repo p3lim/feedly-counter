@@ -131,11 +131,6 @@ var onInitialize = function(){
 	if(!localStorage.getItem('notifications'))
 		localStorage.setItem('notifications', false);
 
-	if(!localStorage.getItem('change3')){
-		localStorage.removeItem('oauth');
-		chrome.tabs.create({url: 'options.html'});
-	};
-
 	rotation = 0;
 
 	var canvas = document.createElement('canvas');

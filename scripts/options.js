@@ -7,13 +7,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	var notifications = document.getElementById('notifications');
 	notifications.checked = localStorage.getItem('notifications') === 'true';
-
-	if(!localStorage.getItem('change3')){
-		var changelog = document.getElementById('changelog');
-		changelog.style.display = 'inline';
-
-		localStorage.setItem('change3', 'shown');
-	};
 });
 
 var interval;
