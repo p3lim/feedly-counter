@@ -113,8 +113,8 @@ var requestCountResponse = function(){
 		if(this.status === 200){
 			var response = JSON.parse(this.response);
 
-			for(var index = 0; index < details.length; index++){
-				var item = details[index];
+			for(var index = 0; index < response.unreadcounts.length; index++){
+				var item = response.unreadcounts[index];
 
 				if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
 					updateBadge(item.count);
@@ -222,9 +222,9 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
 
 		if(data.action == 'markAsRead')
 			setTimeout(requestCount, 2000);
-	}
+	};
 }, {
-	urls: 'https://feedly.com/v3/markers?*'],
+	urls: ['https://feedly.com/v3/markers?*'],
 	types: ['xmlhttprequest']
 }, ['requestBody']);
 
@@ -238,7 +238,7 @@ var tokenResponse = function(){
 	};
 };
 
-chrome.runtime.onMessage.addListener(function(message){
+chrome.runtime.onMessage.addListener(function(message, sender){
 	if(message.key)
 		updateSettings(message.key, message.value);
 	else if(message.visit)
