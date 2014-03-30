@@ -1,5 +1,6 @@
-var rotation, context, image, lastCount;
+var context, lastCount;
 
+var rotation = 0;
 var animateIcon = function(){
 	rotation++;
 
@@ -8,7 +9,7 @@ var animateIcon = function(){
 	context.translate(16, 16);
 	context.rotate(rotation * Math.PI / 32);
 	context.translate(-16, -16);
-	context.drawImage(image, 0, 0);
+	context.drawImage(context.image, 0, 0);
 	context.restore();
 
 	chrome.browserAction.setIcon({
@@ -144,8 +145,8 @@ var onInitialize = function(){
 	context = canvas.getContext('2d');
 	context.scale(0.6, 0.6)
 
-	image = new Image();
-	image.src = 'images/icon_enabled.png';
+	context.image = new Image();
+	context.image.src = 'images/icon_enabled.png';
 
 	requestCount();
 
