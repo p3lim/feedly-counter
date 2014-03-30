@@ -24,7 +24,7 @@ var animateIcon = function(){
 
 var updateBadge = function(text){
 	if(text !== undefined){
-		chrome.browserAction.setIcon({path: '/icons/icon_enabled.png'});
+		chrome.browserAction.setIcon({path: 'images/icon_enabled.png'});
 		chrome.browserAction.setBadgeBackgroundColor({color: '#D00018'});
 		chrome.browserAction.setBadgeText({text: text.toString()});
 
@@ -34,7 +34,7 @@ var updateBadge = function(text){
 			if(localStorage.getItem('feedly-counter-notifications') === 'true'){
 				chrome.notifications.create('feedly-counter-notification', {
 					type: 'basic',
-					iconUrl: '/icons/icon128.png',
+					iconUrl: 'images/icon128.png',
 					title: 'Feedly Counter',
 					message: text + ' unread feed' + (text > 1 ? 's' : ''),
 				}, function(){});
@@ -43,7 +43,7 @@ var updateBadge = function(text){
 
 		localStorage.setItem('feedly-counter-unread', text);
 	} else {
-		chrome.browserAction.setIcon({path: '/icons/icon_disabled.png'});
+		chrome.browserAction.setIcon({path: 'images/icon_disabled.png'});
 		chrome.browserAction.setBadgeBackgroundColor({color: '#BBB'});
 		chrome.browserAction.setBadgeText({text: '?'});
 	}
@@ -145,7 +145,7 @@ var onInitialize = function(){
 	context.scale(0.6, 0.6)
 
 	image = new Image();
-	image.src = '/icons/icon_enabled.png';
+	image.src = 'images/icon_enabled.png';
 
 	requestCount();
 

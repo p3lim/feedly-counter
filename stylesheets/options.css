@@ -1,0 +1,23 @@
+body {
+	font-family: 'Trebuchet MS', sans-serif;
+	padding-left: 150px;
+	padding-top: 20px;
+	background: white url(images/icon128.png) no-repeat fixed 16px 16px;
+}
+
+h2 {
+	font-size: 1.3em;
+	color: #444;
+}
+
+span {
+	color: #F00;
+}
+
+input[type=number] {
+	width: 80px;
+}
+
+#changelog {
+	display: none;
+}
