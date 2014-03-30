@@ -23,15 +23,15 @@ var animateIcon = function(){
 };
 
 var updateNotifications = function(count){
-	if(localStorage.getItem('feedly-counter-notifications') === 'true'){
+	if(localStorage.getItem('feedly-counter') === 'true'){
 		chrome.tabs.query({
 			currentWindow: true,
 			active: true,
 			url: 'http*://feedly.com/*'
 		}, function(tabs){
 			if(tabs.length == 0){
-				chrome.notifications.clear('feedly-counter-notification', function(){
-					chrome.notifications.create('feedly-counter-notification', {
+				chrome.notifications.clear('feedly-counter', function(){
+					chrome.notifications.create('feedly-counter', {
 						type: 'basic',
 						iconUrl: 'images/icon128.png',
 						title: 'Feedly Counter',
@@ -83,18 +83,18 @@ var onReadyState = function(){
 			var response = JSON.parse(this.response);
 			parseCount(response.unreadcounts);
 		} else {
-			localStorage.removeItem('feedly-counter-oauth');
+			localStorage.removeItem('oauth');
 			updateBadge();
 		}
 	}
 }
 
 var requestCount = function(){
-	if(localStorage.getItem('feedly-counter-oauth')){
+	if(localStorage.getItem('oauth')){
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', localStorage.getItem('feedly-counter-scheme') + '://feedly.com/v3/markers/counts');
+		xhr.open('GET', localStorage.getItem('scheme') + '://feedly.com/v3/markers/counts');
 		xhr.onreadystatechange = onReadyState;
-		xhr.setRequestHeader('Authorization', localStorage.getItem('feedly-counter-oauth'));
+		xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
 		xhr.send();
 	} else
 		updateBadge();
@@ -105,7 +105,7 @@ var authCallback = function(details){
 	for(var index = 0; index < headers.length; index++){
 		var header = headers[index];
 		if(header.name === 'X-Feedly-Access-Token'){
-			localStorage.setItem('feedly-counter-oauth', header.value);
+			localStorage.setItem('oauth', header.value);
 			requestCount();
 		};
 	};
@@ -124,7 +124,7 @@ var markCallback = function(details){
 };
 
 var onStorageChanged = function(event){
-	if(event.key === 'feedly-counter-scheme'){
+	if(event.key === 'scheme'){
 		chrome.webRequest.onBeforeRequest.removeListener(markCallback);
 		chrome.webRequest.onBeforeRequest.addListener(markCallback, {
 				urls: [event.newValue + '://feedly.com/v3/markers?*'],
@@ -134,17 +134,17 @@ var onStorageChanged = function(event){
 };
 
 var onInitialize = function(){
-	if(!localStorage.getItem('feedly-counter-interval'))
-		localStorage.setItem('feedly-counter-interval', '15');
+	if(!localStorage.getItem('interval'))
+		localStorage.setItem('interval', '15');
 
-	if(!localStorage.getItem('feedly-counter-scheme'))
-		localStorage.setItem('feedly-counter-scheme', 'https');
+	if(!localStorage.getItem('scheme'))
+		localStorage.setItem('scheme', 'https');
 
-	if(!localStorage.getItem('feedly-counter-notifications'))
-		localStorage.setItem('feedly-counter-notifications', false);
+	if(!localStorage.getItem('notifications'))
+		localStorage.setItem('notifications', false);
 
-	if(!localStorage.getItem('feedly-counter-change3')){
-		localStorage.removeItem('feedly-counter-oauth');
+	if(!localStorage.getItem('change3')){
+		localStorage.removeItem('oauth');
 		chrome.tabs.create({url: 'options.html'});
 	};
 
@@ -163,9 +163,9 @@ var onInitialize = function(){
 	requestCount();
 
 	window.addEventListener('storage', onStorageChanged, false);
-	chrome.alarms.create('feedly-counter', {periodInMinutes: +localStorage.getItem('feedly-counter-interval')});
+	chrome.alarms.create('feedly-counter', {periodInMinutes: +localStorage.getItem('interval')});
 	chrome.webRequest.onBeforeRequest.addListener(markCallback, {
-		urls: [localStorage.getItem('feedly-counter-scheme') + '://feedly.com/v3/markers?*'],
+		urls: [localStorage.getItem('scheme') + '://feedly.com/v3/markers?*'],
 		types: ['xmlhttprequest']
 	}, ['requestBody']);
 };
@@ -174,8 +174,8 @@ chrome.runtime.onStartup.addListener(onInitialize);
 chrome.runtime.onInstalled.addListener(onInitialize);
 
 chrome.browserAction.onClicked.addListener(function(){
-	var scheme = localStorage.getItem('feedly-counter-scheme');
-	if(localStorage.getItem('feedly-counter-oauth'))
+	var scheme = localStorage.getItem('scheme');
+	if(localStorage.getItem('oauth'))
 		requestCount();
 	else {
 		chrome.webRequest.onBeforeSendHeaders.addListener(authCallback, {
@@ -184,14 +184,14 @@ chrome.browserAction.onClicked.addListener(function(){
 	};
 
 	chrome.tabs.query({
-		url: scheme + '://feedly.com/' + (localStorage.getItem('feedly-counter-beta') === 'true' ? 'beta' : '')
+		url: scheme + '://feedly.com/' + (localStorage.getItem('beta') === 'true' ? 'beta' : '')
 	}, function(tabs){
 		var tab = tabs[0];
 		if(tab){
 			chrome.tabs.update(tab.id, {active: true});
 			chrome.tabs.reload(tab.id);
 		} else
-			chrome.tabs.create({url: scheme + '://feedly.com/' + (localStorage.getItem('feedly-counter-beta') === 'true' ? 'beta' : '')});
+			chrome.tabs.create({url: scheme + '://feedly.com/' + (localStorage.getItem('beta') === 'true' ? 'beta' : '')});
 	});
 });
 
