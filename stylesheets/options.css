@@ -1,23 +1,59 @@
-body {
+* {
 	font-family: 'Trebuchet MS', sans-serif;
-	padding-left: 150px;
+}
+
+body {
+	padding-left: 220px;
 	padding-top: 20px;
-	background: white url(images/icon128.png) no-repeat fixed 16px 16px;
+	background: white url(../images/icon128.png) no-repeat fixed 20px 20px;
 }
 
 h2 {
 	font-size: 1.3em;
-	color: #444;
+	margin: 0;
+	color: #555;
 }
 
-span {
-	color: #F00;
+.checkbox h2 {
+	margin-left: 40px;
 }
 
-input[type=number] {
-	width: 80px;
-}
-
-#changelog {
+input {
 	display: none;
+}
+
+input:checked + label:after {
+	opacity: 1.0;
+	border-color: #2b7df9;
+}
+
+input:checked + label:hover:after {
+	opacity: 0.5;
+}
+
+label {
+	cursor: pointer;
+	position: relative;
+}
+
+label:after {
+	opacity: 0.2;
+	content: '';
+	position: absolute;
+	width: 18px;
+	height: 7px;
+	background: transparent;
+	top: 6px;
+	border: 5px solid #333;
+	border-top: none;
+	border-right: none;
+	-webkit-transform: rotate(-45deg);
+}
+
+label:hover:after {
+	opacity: 0.5;
+}
+
+div {
+	height: 55px;
 }
