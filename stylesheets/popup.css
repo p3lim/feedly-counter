@@ -6,6 +6,14 @@ body {
 	height: 478px;
 }
 
+.error {
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 1.3em;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 180px;
+}
+
 .spinners {
 	position: relative;
 	left: 34%;

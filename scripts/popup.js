@@ -11,8 +11,13 @@ var map = function(key){
 };
 
 var popupResponse = function(){
-	if(this.readyState == 4 && this.status == 200)
-		document.querySelector('body').innerHTML = this.response;
+	if(this.readyState == 4){
+		var body = document.querySelector('body');
+		if(this.status == 200)
+			body.innerHTML = this.response;
+		else
+			body.innerHTML = '<div class=\'error\'>Something went wrong,<br>please try again later.</div>';
+	};
 };
 
 document.addEventListener('DOMContentLoaded', function(){
