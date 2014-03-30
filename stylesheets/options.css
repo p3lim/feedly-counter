@@ -14,6 +14,11 @@ h2 {
 	color: #555;
 }
 
+span {
+	color: #2b7df9;
+	cursor: help;
+}
+
 .checkbox h2 {
 	margin-left: 40px;
 }

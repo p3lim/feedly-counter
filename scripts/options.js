@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function(){
 	interval.innerText = localStorage.getItem('interval');
 	interval.addEventListener('mousewheel', function(event){
 		var value = +this.innerText;
+		var multiplier = event.shiftKey ? 25 : 1;
 
 		if(event.wheelDelta > 0)
-			value += 1;
+			value += 1 * multiplier;
 		else
-			value -= 1;
+			value -= 1 * multiplier;
 
 		if(value < 1)
 			value = 1;
