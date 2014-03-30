@@ -25,4 +25,12 @@ document.addEventListener('DOMContentLoaded', function(){
 		xhr.onreadystatechange = popupResponse;
 		xhr.send();
 	};
+
+	window.addEventListener('click', function(event){
+		var target = event.target;
+		if(target.tagName == 'A'){
+			event.preventDefault();
+			chrome.tabs.create({url: target.href});
+		}
+	});
 });
