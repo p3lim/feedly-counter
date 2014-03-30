@@ -20,7 +20,7 @@ var createIcon = function(callback){
 };
 
 var rotation = 0;
-var animateIcon = function(){
+var spinIcon = function(){
 	rotation++;
 
 	context.save();
@@ -35,11 +35,10 @@ var animateIcon = function(){
 		imageData: context.getImageData(0, 0, 19, 19)
 	});
 
-	if(rotation <= 63){
-		setTimeout(animateIcon, 10);
-	} else {
+	if(rotation <= 63)
+		setTimeout(spinIcon, 10);
+	else
 		rotation = 0;
-	};
 };
 
 var updateNotifications = function(count){
@@ -75,7 +74,7 @@ var updateBadge = function(count){
 			chrome.browserAction.setBadgeText({text: ''});
 
 		if(lastCount != count){
-			animateIcon();
+			spinIcon();
 
 			if(count > 0)
 				updateNotifications(count);
