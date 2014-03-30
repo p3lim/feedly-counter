@@ -99,35 +99,20 @@ var requestCountResponse = function(){
 				if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
 					updateBadge(item.count);
 			};
-		} else {
-			updateSettings('oauth');
-			updateBadge();
 		};
 	};
 };
 
 var requestCount = function(){
-	if(localStorage.getItem('oauth')){
+	var token = localStorage.getItem('token');
+	if(token){
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', 'https://feedly.com/v3/markers/counts');
-		xhr.setRequestHeader('Authorization', localStorage.getItem('oauth'));
+		xhr.setRequestHeader('Authorization', token);
 		xhr.onreadystatechange = requestCountResponse;
 		xhr.send();
 	} else
 		updateBadge();
-};
-
-var authCallback = function(details){
-	var headers = details.requestHeaders;
-	for(var index = 0; index < headers.length; index++){
-		var header = headers[index];
-		if(header.name === 'X-Feedly-Access-Token'){
-			updateSettings('oauth', header.value);
-			requestCount();
-		};
-	};
-
-	chrome.webRequest.onBeforeSendHeaders.removeListener(authCallback);
 };
 
 var updateSettings = function(key, value, init){
@@ -180,6 +165,8 @@ chrome.runtime.onStartup.addListener(initialize);
 chrome.runtime.onInstalled.addListener(initialize);
 
 var openTab = function(){
+	requestCount();
+
 	var suffix = localStorage.getItem('beta') == 'true' ? 'beta' : '';
 	var url = 'https://feedly.com/' + suffix;
 
@@ -194,18 +181,6 @@ var openTab = function(){
 			chrome.tabs.create({url: url});
 	});
 };
-
-chrome.browserAction.onClicked.addListener(function(){
-	if(localStorage.getItem('oauth'))
-		requestCount();
-	else {
-		chrome.webRequest.onBeforeSendHeaders.addListener(authCallback, {
-			urls: ['https://feedly.com/v3/subscriptions*']
-		}, ['requestHeaders']);
-	};
-
-	openTab();
-});
 
 chrome.notifications.onClicked.addListener(function(notificationId){
 	if(notificationId == 'feedly-counter')
@@ -230,7 +205,32 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
 	types: ['xmlhttprequest']
 }, ['requestBody']);
 
+var tokenResponse = function(){
+	if(this.readyState == 4 && this.status == 200){
+		var response = JSON.parse(this.response);
+		updateSettings('token', response.access_token);
+
+		openTab();
+	};
+};
+
 chrome.runtime.onMessage.addListener(function(message){
 	if(message.key)
 		updateSettings(message.key, message.value);
+	else if(message.code){
+		chrome.tabs.remove(sender.tab.id);
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'https://feedly.com/v3/auth/token');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onreadystatechange = tokenResponse;
+		xhr.send(JSON.stringify({
+			client_id: '', // TODO: add our id once the Feedly team decides to give me one
+			client_secret: '', // TODO: add our id once the Feedly team decides to give me one
+			code: message.code,
+			redirect_uri: 'https://localhost',
+			state: 'token',
+			grant_type: 'authorization_code'
+		}));
+	};
 });
