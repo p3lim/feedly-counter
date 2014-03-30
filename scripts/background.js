@@ -133,16 +133,6 @@ var authCallback = function(details){
 	chrome.webRequest.onBeforeSendHeaders.removeListener(authCallback);
 };
 
-var markCallback = function(details){
-	if(details.hasOwnProperty('requestBody') || details.requestBody.hasOwnProperty('raw')){
-		var bytes = new Uint8Array(details.requestBody.raw[0].bytes);
-		var data = JSON.parse(String.fromCharCode.apply(null, bytes));
-
-		if(data.action === 'markAsRead')
-			setTimeout(requestCount, 2000);
-	};
-};
-
 var initialize = function(){
 	if(!localStorage.getItem('upgrade')){
 		localStorage.clear();
@@ -166,13 +156,11 @@ var initialize = function(){
 		localStorage.setItem('upgrade', defaults.upgrade);
 	};
 
-	createIcon(requestCount);
+	chrome.alarms.create('feedly-counter', {
+		periodInMinutes: +localStorage.getItem('interval')
+	});
 
-	chrome.alarms.create('feedly-counter', {periodInMinutes: +localStorage.getItem('interval')});
-	chrome.webRequest.onBeforeRequest.addListener(markCallback, {
-		urls: 'https://feedly.com/v3/markers?*'],
-		types: ['xmlhttprequest']
-	}, ['requestBody']);
+	createIcon(requestCount);
 };
 
 chrome.runtime.onStartup.addListener(initialize);
@@ -203,3 +191,16 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	if(alarm.name === 'feedly-counter')
 		requestCount();
 });
+
+chrome.webRequest.onBeforeRequest.addListener(function(details){
+	if(details.hasOwnProperty('requestBody') && details.requestBody.hasOwnProperty('raw')){
+		var bytes = new Uint8Array(details.requestBody.raw[0].bytes);
+		var data = JSON.parse(String.fromCharCode.apply(null, bytes));
+
+		if(data.action == 'markAsRead')
+			setTimeout(requestCount, 2000);
+	}
+}, {
+	urls: 'https://feedly.com/v3/markers?*'],
+	types: ['xmlhttprequest']
+}, ['requestBody']);
