@@ -12,7 +12,7 @@ var createIcon = function(callback){
 	canvas.width = 19;
 
 	context = canvas.getContext('2d');
-	context.scale(0.6, 0.6)
+	context.scale(0.59375, 0.59375);
 
 	context.image = new Image();
 	context.image.src = 'images/icon_enabled.png';
