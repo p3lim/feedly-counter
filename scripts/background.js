@@ -1,4 +1,4 @@
-var rotation, context, image;
+var rotation, context, image, lastCount;
 
 var animateIcon = function(){
 	rotation++;
@@ -22,26 +22,45 @@ var animateIcon = function(){
 	};
 };
 
-var updateBadge = function(text){
-	if(text !== undefined){
-		chrome.browserAction.setIcon({path: 'images/icon_enabled.png'});
-		chrome.browserAction.setBadgeBackgroundColor({color: '#D00018'});
-		chrome.browserAction.setBadgeText({text: text.toString()});
+var updateNotifications = function(count){
+	if(localStorage.getItem('feedly-counter-notifications') === 'true'){
+		chrome.tabs.query({
+			currentWindow: true,
+			active: true,
+			url: 'http*://feedly.com/*'
+		}, function(tabs){
+			if(tabs.length == 0){
+				chrome.notifications.clear('feedly-counter-notification', function(){
+					chrome.notifications.create('feedly-counter-notification', {
+						type: 'basic',
+						iconUrl: 'images/icon128.png',
+						title: 'Feedly Counter',
+						message: count + ' unread feed' + (count > 1 ? 's' : '')
+					}, function(){});
+				});
+			};
+		});
+	};
+};
 
-		if(+localStorage.getItem('feedly-counter-unread') !== +text){
+var updateBadge = function(count){
+	if(typeof(count) == 'number'){
+		chrome.browserAction.setIcon({path: 'images/icon_enabled.png'});
+
+		if(count > 0){
+			chrome.browserAction.setBadgeBackgroundColor({color: '#D00018'});
+			chrome.browserAction.setBadgeText({text: count.toString()});
+		} else
+			chrome.browserAction.setBadgeText({text: ''});
+
+		if(lastCount != count){
 			animateIcon();
 
-			if(localStorage.getItem('feedly-counter-notifications') === 'true'){
-				chrome.notifications.create('feedly-counter-notification', {
-					type: 'basic',
-					iconUrl: 'images/icon128.png',
-					title: 'Feedly Counter',
-					message: text + ' unread feed' + (text > 1 ? 's' : ''),
-				}, function(){});
-			};
-		};
+			if(count > 0)
+				updateNotifications(count);
 
-		localStorage.setItem('feedly-counter-unread', text);
+			lastCount = count;
+		};
 	} else {
 		chrome.browserAction.setIcon({path: 'images/icon_disabled.png'});
 		chrome.browserAction.setBadgeBackgroundColor({color: '#BBB'});
@@ -54,7 +73,7 @@ var parseCount = function(details){
 		var item = details[index];
 
 		if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
-			updateBadge(item.count > 0 ? item.count : '');
+			updateBadge(item.count);
 	};
 };
 
