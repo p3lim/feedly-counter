@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		changelog.style.display = 'inline';
 
 		localStorage.setItem('feedly-counter-change3', 'shown');
-	}
+	};
 });
 
 var interval;
