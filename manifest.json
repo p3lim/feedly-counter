@@ -11,9 +11,6 @@
 	"permissions": [
 		"tabs", "webRequest", "alarms", "notifications", "https://feedly.com/*"
 	],
-	"browser_action": {
-		"default_icon": "images/icon_disabled.png"
-	},
 	"background": {
 		"persistent": true,
 		"scripts": [

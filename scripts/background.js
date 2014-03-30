@@ -6,7 +6,7 @@ var defaults = {
 }
 
 var context;
-var createIcon = function(){
+var createIcon = function(callback){
 	var canvas = document.createElement('canvas');
 	canvas.height = 19;
 	canvas.width = 19;
@@ -16,6 +16,7 @@ var createIcon = function(){
 
 	context.image = new Image();
 	context.image.src = 'images/icon_enabled.png';
+	context.image.onload = callback;
 };
 
 var rotation = 0;
@@ -166,8 +167,7 @@ var onInitialize = function(){
 		localStorage.setItem('upgrade', defaults.upgrade);
 	}
 
-	createIcon();
-	requestCount();
+	createIcon(requestCount);
 
 	chrome.alarms.create('feedly-counter', {periodInMinutes: +localStorage.getItem('interval')});
 	chrome.webRequest.onBeforeRequest.addListener(markCallback, {
