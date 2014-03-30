@@ -88,6 +88,26 @@ var updateBadge = function(count){
 	};
 };
 
+var refreshResponse = function(){
+	if(this.readyState == 4 && this.status == 200){
+		var response = JSON.parse(this.response);
+		updateSettings('token', response.access_token);
+	};
+};
+
+var refreshToken = function(){
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'https.//feedly.com/v3/auth/token');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.onreadystatechange = refreshResponse;
+	xhr.send(JSON.stringify({
+		client_id: '', // TODO: add our id once the Feedly team decides to give me one
+		client_secret: '', // TODO: add our id once the Feedly team decides to give me one
+		refresh_token: localStorage.getItem('refreshToken'),
+		grant_type: 'refresh_token'
+	}));
+};
+
 var requestCountResponse = function(){
 	if(this.readyState === 4){
 		if(this.status === 200){
@@ -99,7 +119,8 @@ var requestCountResponse = function(){
 				if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
 					updateBadge(item.count);
 			};
-		};
+		} else
+			refreshToken();
 	};
 };
 
@@ -211,6 +232,7 @@ var tokenResponse = function(){
 	if(this.readyState == 4 && this.status == 200){
 		var response = JSON.parse(this.response);
 		updateSettings('token', response.access_token);
+		updateSettings('refreshToken', response.refresh_token);
 
 		openTab();
 	};
