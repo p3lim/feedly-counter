@@ -27,7 +27,10 @@ document.addEventListener('DOMContentLoaded', function(){
 		if(value != +this.innerText){
 			this.innerText = value;
 
-			localStorage.addItem('interval', value);
+			chrome.runtime.sendMessage({
+				key: 'interval',
+				value: value
+			});
 		};
 	});
 });

@@ -130,6 +130,17 @@ var authCallback = function(details){
 	chrome.webRequest.onBeforeSendHeaders.removeListener(authCallback);
 };
 
+var updateSettings = function(key, value){
+	localStorage.setItem(key, value);
+
+	if(key == 'interval'){
+		chrome.alarms.clear('feedly-counter');
+		chrome.alarms.create('feedly-counter', {
+			periodInMinutes: +value
+		});
+	};
+};
+
 var initialize = function(){
 	if(!localStorage.getItem('upgrade')){
 		localStorage.clear();
@@ -213,3 +224,8 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
 	urls: 'https://feedly.com/v3/markers?*'],
 	types: ['xmlhttprequest']
 }, ['requestBody']);
+
+chrome.runtime.onMessage.addListener(function(message){
+	if(message.key)
+		updateSettings(message.key, message.value);
+});
