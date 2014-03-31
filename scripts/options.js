@@ -1,5 +1,5 @@
 var inputChange = function(){
-	localStorage.addItem(this.id, this.checked);
+	localStorage.setItem(this.id, this.checked);
 };
 
 document.addEventListener('DOMContentLoaded', function(){
