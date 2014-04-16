@@ -48,7 +48,7 @@ var updateNotifications = function(count){
 			active: true,
 			url: 'https://feedly.com/*'
 		}, function(tabs){
-			if(tabs.length == 0){
+			if(!tabs.length){
 				chrome.notifications.clear('feedly-counter', function(){
 					chrome.notifications.create('feedly-counter', {
 						type: 'basic',
@@ -97,7 +97,7 @@ var refreshResponse = function(){
 
 var refreshToken = function(){
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'https.//feedly.com/v3/auth/token');
+	xhr.open('POST', 'https://feedly.com/v3/auth/token');
 	xhr.setRequestHeader('Content-Type', 'application/json');
 	xhr.onreadystatechange = refreshResponse;
 	xhr.send(JSON.stringify({
@@ -109,8 +109,8 @@ var refreshToken = function(){
 };
 
 var requestCountResponse = function(){
-	if(this.readyState === 4){
-		if(this.status === 200){
+	if(this.readyState == 4){
+		if(this.status == 200){
 			var response = JSON.parse(this.response);
 
 			for(var index = 0; index < response.unreadcounts.length; index++){
