@@ -36,6 +36,6 @@ document.addEventListener('DOMContentLoaded', function(){
 		if(target.tagName == 'A'){
 			event.preventDefault();
 			chrome.tabs.create({url: target.href});
-		}
+		};
 	});
 });
