@@ -89,9 +89,15 @@ var updateBadge = function(count){
 };
 
 var refreshResponse = function(){
-	if(this.readyState == 4 && this.status == 200){
-		var response = JSON.parse(this.response);
-		updateSettings('token', response.access_token);
+	if(this.readyState == 4){
+		if(this.status == 200){
+			var response = JSON.parse(this.response);
+			updateSettings('token', response.access_token);
+		} else if(this.status == 401){
+			localStorage.removeItem('token');
+			localStorage.removeItem('refreshToken');
+			updateBadge();
+		};
 	};
 };
 
@@ -119,7 +125,7 @@ var requestCountResponse = function(){
 				if(item.id.match(/^user\/[\da-f-]+?\/category\/global\.all$/))
 					updateBadge(item.count);
 			};
-		} else
+		} else if(this.status == 401)
 			refreshToken();
 	};
 };
@@ -137,14 +143,11 @@ var requestCount = function(){
 };
 
 var updateSettings = function(key, value, init){
-	if(value)
-		localStorage.setItem(key, value);
-	else
-		localStorage.removeItem(key);
+	localStorage.setItem(key, value);
 
 	if(!init){
 		if(key == 'token')
-			updateBadge();
+			requestCount();
 		else if(key == 'interval'){
 			chrome.alarms.clear('feedly-counter');
 			chrome.alarms.create('feedly-counter', {
