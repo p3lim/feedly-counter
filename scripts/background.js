@@ -8,8 +8,7 @@ var defaults = {
 var context;
 var createIcon = function(callback){
 	var canvas = document.createElement('canvas');
-	canvas.height = 19;
-	canvas.width = 19;
+	canvas.height = canvas.width = 19;
 
 	context = canvas.getContext('2d');
 	context.scale(0.59375, 0.59375);
@@ -214,7 +213,7 @@ chrome.notifications.onClicked.addListener(function(notificationId){
 });
 
 chrome.alarms.onAlarm.addListener(function(alarm){
-	if(alarm.name === 'feedly-counter')
+	if(alarm.name == 'feedly-counter')
 		requestCount();
 });
 
