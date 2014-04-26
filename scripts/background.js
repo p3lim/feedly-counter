@@ -106,8 +106,8 @@ var refreshToken = function(){
 	xhr.setRequestHeader('Content-Type', 'application/json');
 	xhr.onreadystatechange = refreshResponse;
 	xhr.send(JSON.stringify({
-		client_id: 'feedlychecker', // TODO: add our id once the Feedly team decides to give me one
-		client_secret: '8WO2VPZ6UULL4AI2F1IU3UTO', // TODO: add our id once the Feedly team decides to give me one
+		client_id: 'feedly',
+		client_secret: '0XP4XQ07VVMDWBKUHTJM4WUQ',
 		refresh_token: localStorage.getItem('refreshToken'),
 		grant_type: 'refresh_token'
 	}));
@@ -253,8 +253,8 @@ chrome.runtime.onMessage.addListener(function(message, sender){
 		xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.onreadystatechange = tokenResponse;
 		xhr.send(JSON.stringify({
-			client_id: 'feedlychecker', // TODO: add our id once the Feedly team decides to give me one
-			client_secret: '8WO2VPZ6UULL4AI2F1IU3UTO', // TODO: add our id once the Feedly team decides to give me one
+			client_id: 'feedly',
+			client_secret: '0XP4XQ07VVMDWBKUHTJM4WUQ',
 			code: message.code,
 			redirect_uri: 'https://localhost',
 			state: 'token',

@@ -1,5 +1,5 @@
 var params = {
-	client_id: 'feedlychecker', // TODO: add our id once the Feedly team decides to give me one
+	client_id: 'feedly',
 	scope: 'https://cloud.feedly.com/subscriptions',
 	redirect_uri: 'http://localhost',
 	response_type: 'code',
