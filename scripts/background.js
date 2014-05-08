@@ -41,7 +41,7 @@ var spinIcon = function(){
 };
 
 var updateNotifications = function(count){
-	if(localStorage.getItem('feedly-counter') === 'true'){
+	if(localStorage.getItem('notifications') === 'true'){
 		chrome.tabs.query({
 			currentWindow: true,
 			active: true,
